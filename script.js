@@ -1,4 +1,4 @@
-const API = "https://anapioficeandfire.com/api/houses";
+const API = "https://mhw-db.com/weapons/";
 
 function createNode(element) {
     return document.createElement(element);
@@ -7,28 +7,27 @@ function createNode(element) {
 function append(parent, child) {
     return parent.appendChild(child);
 }
+
+function filterbyweapontype(data, type){
+    return data.filter((element) => element.type == type);
+}
+
 fetch(API)
     .then((resp) => resp.json())
     .then(function (data) {
-        let houses = data
-        let container = createNode("div")
-        container.classList.add(
-            "container"
-        )
-        document.body.appendChild(container)
-        let div_houses = createNode("div")
-        div_houses.setAttribute("id", "houses")
-        div_houses.classList.add(
-            "row",
-            "row-cols-3"
-        )
-        append(container, div_houses)
-        houses.map(element => {
-            let div = createNode("div")
-            div.textContent = element.name
-            append(document.getElementById("id_div"), div)
-        })
-        console.log(data)
+
+        const allweapons = data
+
+        const savedweapons = new Map(
+            [
+            ["long-swords", filterbyweapontype(allweapons, "long-sword")],
+            ["great-swords", filterbyweapontype(allweapons, "great-sword")],
+            ["charge-blades", filterbyweapontype(allweapons, "charge-blade")],
+        ]);
+        let contenedor = createNode("div")
+
+        contenedor.textnode= "sample text"
+        append(document.getElementById("id_div"), contenedor)
     })
     .catch(function (error) {
         console.log(error);
