@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An Monster Hunter world weapons</title>
+    <title>A Monster Hunter World weapons API</title>
 </head>
+
 <body>
-    <div id="id_div">
+    <div>
+        <span id="loading"></span><br>
+        <label for="tipo">Tipo de arma</label>
+        <input type="text" name="tipo" id="tipo" placeholder="long-sword">
+        <button onclick="buscar()">Buscar</button>
     </div>
+    <div id="id_div"></div>
     <script src="script.js"></script>
 </body>
+
 </html>
