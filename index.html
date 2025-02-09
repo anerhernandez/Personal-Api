@@ -13,14 +13,31 @@
         <span id="loading"></span><br>
         <div style="padding-top: 1%;">
             <label for="tipo">Tipo de arma</label>
-            <input type="text" name="tipo" id="tipo" placeholder="long-sword">
+            <select name="tipo" id="tipo">
+                <option value="great-sword">Great sword</option>
+                <option value="long-sword">Long sword</option>
+                <option value="sword-and-shield">sword-and-shield</option>
+                <option value="dual-blades">dual-blades</option>
+                <option value="hammer">hammer</option>
+                <option value="hunting-horn">hunting-horn</option>
+                <option value="lance">lance</option>
+                <option value="gunlance">gunlance</option>
+                <option value="switch-axe">switch-axe</option>
+                <option value="charge-blade">charge-blade</option>
+                <option value="insect-glaive">insect-glaive</option>
+                <option value="light-bowgun">light-bowgun</option>
+                <option value="heavy-bowgun">heavy-bowgun</option>
+                <option value="bow">bow</option>
+            </select>
             <button onclick="renderweapons()">Buscar</button>
         </div>
     </nav>
     <div id="id_div" style="width: 40%; place-self: center; text-align: center; padding-top: 2%; padding-bottom: 2%;">
     </div>
     <span id="notfound" style="width: 40%; place-self: center; text-align: center; padding-top: 2%; padding-bottom: 2%;"></span>
-    <script src="script.js"></script>
+    <script src="script.js">
+        
+    </script>
 </body>
 
 </html>

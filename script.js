@@ -8,13 +8,11 @@ function append(parent, child) {
     return parent.appendChild(child);
 }
 
-function filterbyweapontype(data, type){
-    return data.filter((element) => element.type == type);
-}
-function buscar(){
+async function buscar(){
     document.getElementById("notfound").innerHTML=""
     document.getElementById("id_div").innerHTML=""
-    return filterbyweapontype(JSON.parse(localStorage.getItem("weapons")), document.getElementById("tipo").value)
+    data = await searchapi(document.getElementById("tipo").value)
+    return data
 }
 
 function createcard(element){
@@ -65,12 +63,11 @@ function createcard(element){
 }
 
 
-function renderweapons(){
-    let weaponsSearched = buscar()
+async function renderweapons(){
+    let weaponsSearched = await buscar()
     if (weaponsSearched == null || weaponsSearched == "") {
         document.getElementById("notfound").textContent = "No se encontraron armas de tipo: " + document.getElementById("tipo").value 
     } else {
-        console.log(weaponsSearched)
         let cards = createNode("div")
         cards.setAttribute('id', "cards")
         cards.classList.add(
@@ -88,25 +85,28 @@ function renderweapons(){
     }
 }
 
-if (localStorage.getItem("weapons") === null) {
+
+
+
+async function searchapi(tipo){
     document.getElementById("loading").textContent = "Loading API"
-    fetch(API)
+    let weapons = []
+    await fetch(`https://mhw-db.com/weapons?q={"type":"${tipo}"}`)
     .then((resp) => resp.json())
     .then(function (data) {
             document.getElementById("loading").textContent = "API loaded"
-            const allweapons = data
-    
+            weapons = data
             // const savedweapons = new Map(
             //     [
             //     ["long-swords", filterbyweapontype(allweapons, "long-sword")],
             //     ["great-swords", filterbyweapontype(allweapons, "great-sword")],
             //     ["charge-blades", filterbyweapontype(allweapons, "charge-blade")],
             // ]);
-            localStorage.setItem("weapons", JSON.stringify(allweapons))
         })
         .catch(function (error) {
             console.log(error);
         });
-}else{
-    document.getElementById("loading").textContent = "API loaded"
+        return weapons
 }
+//Loads first
+renderweapons()
