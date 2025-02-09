@@ -5,16 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Monster Hunter World weapons API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-    <div>
+    <nav style="text-align: center; padding-top: 1%;">
         <span id="loading"></span><br>
-        <label for="tipo">Tipo de arma</label>
-        <input type="text" name="tipo" id="tipo" placeholder="long-sword">
-        <button onclick="buscar()">Buscar</button>
+        <div style="padding-top: 1%;">
+            <label for="tipo">Tipo de arma</label>
+            <input type="text" name="tipo" id="tipo" placeholder="long-sword">
+            <button onclick="renderweapons()">Buscar</button>
+        </div>
+    </nav>
+    <div id="id_div" style="width: 40%; place-self: center; text-align: center; padding-top: 2%; padding-bottom: 2%;">
     </div>
-    <div id="id_div"></div>
+    <span id="notfound" style="width: 40%; place-self: center; text-align: center; padding-top: 2%; padding-bottom: 2%;"></span>
     <script src="script.js"></script>
 </body>
 
