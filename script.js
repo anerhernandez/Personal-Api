@@ -25,8 +25,8 @@ function createcard(element){
     )
     
     if (element.assets == "" || element.assets == null || element.assets.image == null ) {
-        let nophoto = createNode("li")
-        nophoto.textContent = "No se han encontrado imagenes de este arma: " + element.name
+        let nophoto = createNode("img")
+        nophoto.setAttribute("src", "notfound.webp")
         append(card, nophoto)
         append(card, createNode("hr"))
     } else {
