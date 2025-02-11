@@ -71,6 +71,17 @@ function createcard(element){
         elementodmg.textContent = " Daño de elemento: " + element.elements[0].damage
         append(lista, elementodmg)
     }
+
+    //Creates a field of Durability and its stats dependingon color. If the weapon has no durability, such as bow, it will display None
+    if (element.durability == null || element.durability[5] == null || element.durability[5] == "" ) {
+        let durabilidad = createNode("p")
+        durabilidad.textContent = "Durabilidad: None"
+        append(lista, durabilidad)
+    } else {
+        let durabilidad = createNode("p")
+        durabilidad.innerHTML = "Durabilidad (colores): Rojo: " + element.durability[5].red + "<br>Naranja: " + element.durability[5].orange + "<br>Amarillo: " + element.durability[5].yellow + "<br>Verde: " + element.durability[5].green + "<br>Azul: " + element.durability[5].blue
+        append(lista, durabilidad)
+    }
     //Creates a rarity field to diplay the rarity of the weapon (the more rarity, the higher the rank the weapon is obtained)
     let damagetype = createNode("li")
     damagetype.textContent = "Tipo de daño: " + element.damageType
@@ -126,6 +137,7 @@ async function searchapi(tipo){
             //     ["great-swords", filterbyweapontype(allweapons, "great-sword")],
             //     ["charge-blades", filterbyweapontype(allweapons, "charge-blade")],
             // ]);
+            console.log(weapons)
         })
         .catch(function (error) {
             console.log(error);
