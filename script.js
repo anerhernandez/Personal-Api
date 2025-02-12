@@ -12,6 +12,39 @@ async function buscar(){
     data = await searchapi(document.getElementById("tipo").value)
     return data
 }
+
+
+async function saveWeapon(weapon_id){
+    const apisingularsearch = async () => {
+        const response = await fetch(`https://mhw-db.com/weapons?q={"id":"${weapon_id}"}`)
+          .then((resp) => resp.json())
+            return response
+        }
+    let weapon = await apisingularsearch()
+
+
+
+    //Si no existe local storage crea un objeto de key el tipo de arma con un array del arma como valor y lo guarda en localstorage
+   if (localStorage.getItem("desiredweapons") === null) {
+    let savedweapons = {
+        [weapon[0].type + "s"] : [weapon]
+    }
+     localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
+     //Si ya existe localstorage toma que existe y si existe un grupo de ese tipo de arma concatena la nueva arma a ese grupo, si no, crea un nuvo grupo de armas
+   }else{
+    let savedweapons = JSON.parse(localStorage.getItem("desiredweapons"));
+    if ((Object.keys(savedweapons)).includes(weapon[0].type + "s")) {
+        let valores = Object.values(savedweapons)
+        valores[0].push(weapon)
+        localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
+    } else {
+        Object.assign(savedweapons, { [weapon[0].type + "s"]: [weapon] });
+        localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
+    }
+   }
+   console.log(JSON.parse(localStorage.getItem("desiredweapons")))
+}
+
 //Function that creates individual cards
 function createcard(element){
     let card = createNode("div")
@@ -21,7 +54,6 @@ function createcard(element){
         "border-gray-600",
         "rounded",
     )
-    
     //Creates a field of image if the weapon has an image, if not a default not found image will be displayed
     if (element.assets == "" || element.assets == null || element.assets.image == null ) {
         let nophoto = createNode("img")
@@ -38,6 +70,7 @@ function createcard(element){
     lista.classList.add(
         "text-left",
         "p-6",
+        "list-disc"
     )
     append(card, lista)
 
@@ -48,7 +81,6 @@ function createcard(element){
     )
     nombre.textContent = "Nombre: " + element.name
     append(lista,nombre)
-
 
     //Creates a raw damage field to diplay base weapon damage without buffs or any other calculation nor stat
     let rawd = createNode("li")
@@ -74,12 +106,12 @@ function createcard(element){
 
     //Creates a field of Durability and its stats dependingon color. If the weapon has no durability, such as bow, it will display None
     if (element.durability == null || element.durability[5] == null || element.durability[5] == "" ) {
-        let durabilidad = createNode("p")
+        let durabilidad = createNode("li")
         durabilidad.textContent = "Durabilidad: None"
         append(lista, durabilidad)
     } else {
-        let durabilidad = createNode("p")
-        durabilidad.innerHTML = "Durabilidad (colores): Rojo: " + element.durability[5].red + "<br>Naranja: " + element.durability[5].orange + "<br>Amarillo: " + element.durability[5].yellow + "<br>Verde: " + element.durability[5].green + "<br>Azul: " + element.durability[5].blue
+        let durabilidad = createNode("li")
+        durabilidad.innerHTML = "Durabilidad (colores): Rojo: <i style='color:red;'>" + element.durability[5].red + "</i></i><br>Naranja: <i style='color:orange;'>" + element.durability[5].orange + "</i><br>Amarillo: <i style='color:goldenrod;'>" + element.durability[5].yellow + "</i><br>Verde: <i style='color:green;'>" + element.durability[5].green + "</i><br>Azul: <i style='color:blue;'>" + element.durability[5].blue + "</i>"
         append(lista, durabilidad)
     }
     //Creates a rarity field to diplay the rarity of the weapon (the more rarity, the higher the rank the weapon is obtained)
@@ -93,6 +125,21 @@ function createcard(element){
     rarity.textContent = "Rareza: " + element.rarity
     append(lista,rarity)
 
+    append(card, createNode("hr"))
+
+    let button = createNode("button")
+    button.setAttribute("id", element.id)
+    button.setAttribute("value", element.id)
+    button.setAttribute("name", "addweapon")
+    button.setAttribute("onclick", `saveWeapon(${element.id})`)
+    button.classList.add(
+        "border",
+        "border-2",
+        "p-2"
+
+    )
+    button.textContent = "Añadir a equipo deseado"
+    append(lista,button)
     //Appends the card to the parent div where all cards are displayed
     append(document.getElementById("cards"), card)
 }
@@ -131,12 +178,7 @@ async function searchapi(tipo){
     .then(function (data) {
             document.getElementById("loading").textContent = "API loaded"
             weapons = data
-            // const savedweapons = new Map(
-            //     [
-            //     ["long-swords", filterbyweapontype(allweapons, "long-sword")],
-            //     ["great-swords", filterbyweapontype(allweapons, "great-sword")],
-            //     ["charge-blades", filterbyweapontype(allweapons, "charge-blade")],
-            // ]);
+            
             console.log(weapons)
         })
         .catch(function (error) {
