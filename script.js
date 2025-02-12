@@ -27,22 +27,22 @@ async function saveWeapon(weapon_id){
     //Si no existe local storage crea un objeto de key el tipo de arma con un array del arma como valor y lo guarda en localstorage
    if (localStorage.getItem("desiredweapons") === null) {
     let savedweapons = {
-        [weapon[0].type + "s"] : [weapon]
+        [weapon[0].type] : [weapon]
     }
      localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
      //Si ya existe localstorage toma que existe y si existe un grupo de ese tipo de arma concatena la nueva arma a ese grupo, si no, crea un nuvo grupo de armas
    }else{
+
     let savedweapons = JSON.parse(localStorage.getItem("desiredweapons"));
-    if ((Object.keys(savedweapons)).includes(weapon[0].type + "s")) {
-        let valores = Object.values(savedweapons)
-        valores[0].push(weapon)
+
+    if ((Object.keys(savedweapons)).includes(weapon[0].type)) {
+        savedweapons[weapon[0].type].push(weapon)
         localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
     } else {
-        Object.assign(savedweapons, { [weapon[0].type + "s"]: [weapon] });
+        Object.assign(savedweapons, { [weapon[0].type]: [weapon] });
         localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
     }
    }
-   console.log(JSON.parse(localStorage.getItem("desiredweapons")))
 }
 
 //Function that creates individual cards
