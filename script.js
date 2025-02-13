@@ -24,20 +24,22 @@ async function saveWeapon(weapon_id){
 
 
 
-    //Si no existe local storage crea un objeto de key el tipo de arma con un array del arma como valor y lo guarda en localstorage
+    //If local storage doesn't exist, creates an object with weapon.type as key and inserts that weapon as value inside localstorage
    if (localStorage.getItem("desiredweapons") === null) {
     let savedweapons = {
         [weapon[0].type] : [weapon]
     }
      localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
-     //Si ya existe localstorage toma que existe y si existe un grupo de ese tipo de arma concatena la nueva arma a ese grupo, si no, crea un nuvo grupo de armas
+     //If localstorage does exist saves it inside a variable
    }else{
 
     let savedweapons = JSON.parse(localStorage.getItem("desiredweapons"));
 
+    //Checks if the weapon type matches an existing key inside the object and if it does, inserts that weapon to that key
     if ((Object.keys(savedweapons)).includes(weapon[0].type)) {
         savedweapons[weapon[0].type].push(weapon)
         localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
+    //Inserts a ney key with weapon.type as key and also inserts that weapon paired to that key
     } else {
         Object.assign(savedweapons, { [weapon[0].type]: [weapon] });
         localStorage.setItem("desiredweapons", JSON.stringify(savedweapons));
@@ -69,7 +71,7 @@ function createcard(element){
     let lista = createNode("ul")
     lista.classList.add(
         "text-left",
-        "p-6",
+        "p-9",
         "list-disc"
     )
     append(card, lista)
@@ -156,17 +158,18 @@ async function renderweapons(){
             "grid",
             "grid-cols-1",
             "md:grid-cols-2",
-            "lg:grid-cols-3",
+            "2xl:grid-cols-3",
             "gap-5"
         )
         
         append(document.getElementById("id_div"), cards)
-        weaponsSearched.forEach(element => {
+        
+        //Use of map to generate all cards of weaponsSearched's length
+        weaponsSearched.map(function (element) {
             createcard(element)
-        });
+          });
     }
 }
-
 
 
 //Async function that takes a weapon type as a parameter and queriess the API to return the values searched
@@ -178,8 +181,6 @@ async function searchapi(tipo){
     .then(function (data) {
             document.getElementById("loading").textContent = "API loaded"
             weapons = data
-            
-            console.log(weapons)
         })
         .catch(function (error) {
             console.log(error);
@@ -189,3 +190,20 @@ async function searchapi(tipo){
 
 //Loads render weapons (Great sword) when loading the page for the first time or refreshing 
 renderweapons()
+
+
+
+//Filter for weapons (saved in localstorage )with rarity above or equal to 5
+if (localStorage.getItem("desiredweapons") != null) {
+    let weaponsobject = JSON.parse(localStorage.getItem("desiredweapons"))
+    let weapons = Object.values(weaponsobject)
+
+    console.log(weapons)
+    weapons.forEach(function(weaponkey) {
+        weaponkey.forEach(function(weaponkey){
+            if (weaponkey.filter((weapon) => weapon.rarity >=5).length != 0) {
+                console.log(weaponkey)
+            }
+        })
+    })
+}
