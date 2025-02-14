@@ -198,7 +198,6 @@ if (localStorage.getItem("desiredweapons") != null) {
     let weaponsobject = JSON.parse(localStorage.getItem("desiredweapons"))
     let weapons = Object.values(weaponsobject)
 
-    console.log(weapons)
     weapons.forEach(function(weaponkey) {
         weaponkey.forEach(function(weaponkey){
             if (weaponkey.filter((weapon) => weapon.rarity >=5).length != 0) {
